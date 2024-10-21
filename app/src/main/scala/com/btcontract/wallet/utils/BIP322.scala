@@ -11,7 +11,7 @@ object BIP322Data {
 
   def parseVerify(raw: String): BIP322VerifyData = raw split '|' match {
     case Array(address, hash, sig64, "-") => BIP322VerifyData(message = None, address, ByteVector.fromValidHex(hash), sig64)
-    case Array(address, hash, sig64, msg) => BIP322VerifyData(Some(fromBase64String(msg)), address, ByteVector.fromValidHex(hash), sig64)
+    case Array(address, hash, sig64, msg) => BIP322VerifyData(Some apply fromBase64String(msg), address, ByteVector.fromValidHex(hash), sig64)
     case _ => throw new RuntimeException
   }
 

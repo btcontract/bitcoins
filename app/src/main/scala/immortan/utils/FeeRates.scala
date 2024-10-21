@@ -80,10 +80,10 @@ trait FeeRatesProvider {
 // Esplora
 
 class EsploraFeeProvider(val url: String) extends FeeRatesProvider {
-  type EsploraFeeStructure = Map[String, Long]
+  type EsploraFeeStructure = Map[String, Double]
 
   def provide: FeeratesPerKB = {
-    val structure = to[EsploraFeeStructure](ElectrumWallet.connectionProvider.get(url).string)
+    val structure = to[EsploraFeeStructure](ElectrumWallet.connectionProvider.get(url).string).mapValues(_.toLong)
 
     FeeratesPerKB(
       mempoolMinFee = extractFeerate(structure, 1008),
@@ -100,7 +100,7 @@ class EsploraFeeProvider(val url: String) extends FeeRatesProvider {
 
   // First we keep only fee ranges with a max block delay below the limit
   // out of all the remaining fee ranges, we select the one with the minimum higher bound
-  def extractFeerate(structure: EsploraFeeStructure, maxBlockDelay: Int): FeeratePerKB = {
+  def extractFeerate(structure: Map[String, Long], maxBlockDelay: Int): FeeratePerKB = {
     val belowLimit = structure.filterKeys(_.toInt <= maxBlockDelay).values
     FeeratePerKB(belowLimit.min.sat * 1000L)
   }
