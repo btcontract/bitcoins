@@ -83,7 +83,9 @@ class EsploraFeeProvider(val url: String) extends FeeRatesProvider {
   type EsploraFeeStructure = Map[String, Double]
 
   def provide: FeeratesPerKB = {
-    val structure = to[EsploraFeeStructure](ElectrumWallet.connectionProvider.get(url).string).mapValues(_.toLong)
+    val structure = to[EsploraFeeStructure] {
+      ElectrumWallet.connectionProvider.get(url).string
+    }.mapValues(_.toLong)
 
     FeeratesPerKB(
       mempoolMinFee = extractFeerate(structure, 1008),

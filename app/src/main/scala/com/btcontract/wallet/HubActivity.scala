@@ -12,10 +12,8 @@ import com.btcontract.wallet.Colors._
 import com.btcontract.wallet.HubActivity._
 import com.btcontract.wallet.R.string._
 import com.btcontract.wallet.utils._
-import com.chauthai.swipereveallayout.{SwipeRevealLayout, ViewBinderHelper}
 import com.google.android.gms.tasks.{OnCompleteListener, Task}
 import com.google.android.play.core.review.{ReviewInfo, ReviewManagerFactory}
-import com.ornach.nobobutton.NoboButton
 import com.sparrowwallet.drongo
 import fr.acinq.bitcoin.DeterministicWallet.ExtendedPublicKey
 import fr.acinq.bitcoin._
@@ -70,7 +68,6 @@ class HubActivity extends BaseActivity with ExternalDataChecker { me =>
   private[this] lazy val expandContainer = getLayoutInflater.inflate(R.layout.frag_expand, null, false)
   private[this] lazy val expand = expandContainer.findViewById(R.id.expand).asInstanceOf[ImageButton]
 
-  private[this] val viewBinderHelper = new ViewBinderHelper
   lazy val walletCards = new WalletCardsViewHolder
   var openListItems = Set.empty[String]
 
@@ -132,12 +129,9 @@ class HubActivity extends BaseActivity with ExternalDataChecker { me =>
     override def getItemId(position: Int): Long = position
     override def getCount: Int = allInfos.size
 
-    override def getView(position: Int, savedView: View, parent: ViewGroup): View = getItem(position) match { case item =>
-      val view = if (null == savedView) getLayoutInflater.inflate(R.layout.frag_payment_line, null) else savedView.asInstanceOf[View]
+    override def getView(pos: Int, savedView: View, prnt: ViewGroup): View = getItem(pos) match { case item =>
+      val view = if (null == savedView) getLayoutInflater.inflate(R.layout.frag_payment_line, null) else savedView
       val holder = if (null == view.getTag) new PaymentLineViewHolder(view) else view.getTag.asInstanceOf[PaymentLineViewHolder]
-      // At first we always reset these properties, each component may later change them as it sees fit
-      viewBinderHelper.bind(holder.swipeWrap, item.identity)
-      holder.swipeWrap.setLockDrag(true)
       view.setAlpha(1F)
 
       if (openListItems contains item.identity) holder.expand(item) else holder.collapse(item)
@@ -150,57 +144,29 @@ class HubActivity extends BaseActivity with ExternalDataChecker { me =>
 
   class PaymentLineViewHolder(itemView: View) extends RecyclerView.ViewHolder(itemView) { self =>
     val extraInfo: FlowLayout = itemView.findViewById(R.id.extraInfo).asInstanceOf[FlowLayout]
-    val swipeWrap: SwipeRevealLayout = itemView.asInstanceOf[SwipeRevealLayout]
 
-    val spacer: View = swipeWrap.findViewById(R.id.spacer)
-    val spacer1: View = swipeWrap.findViewById(R.id.spacer1)
+    val spacer: View = itemView.findViewById(R.id.spacer)
+    val spacer1: View = itemView.findViewById(R.id.spacer1)
 
-    val paymentCardContainer: View = swipeWrap.findViewById(R.id.paymentCardContainer)
-    val setItemLabel: NoboButton = swipeWrap.findViewById(R.id.setItemLabel).asInstanceOf[NoboButton]
-    val shareItem: NoboButton = swipeWrap.findViewById(R.id.shareItem).asInstanceOf[NoboButton]
+    val paymentCardContainer: View = itemView.findViewById(R.id.paymentCardContainer)
 
-    val nonLinkContainer: LinearLayout = swipeWrap.findViewById(R.id.nonLinkContainer).asInstanceOf[LinearLayout]
-    val amountAndMeta: RelativeLayout = swipeWrap.findViewById(R.id.amountAndMeta).asInstanceOf[RelativeLayout]
-    val description: TextView = swipeWrap.findViewById(R.id.description).asInstanceOf[TextView]
-    val statusIcon: ImageView = swipeWrap.findViewById(R.id.statusIcon).asInstanceOf[ImageView]
-    val statusText: TextView = swipeWrap.findViewById(R.id.statusText).asInstanceOf[TextView]
-    val labelIcon: ImageView = swipeWrap.findViewById(R.id.labelIcon).asInstanceOf[ImageView]
-    val amount: TextView = swipeWrap.findViewById(R.id.amount).asInstanceOf[TextView]
-    val meta: TextView = swipeWrap.findViewById(R.id.meta).asInstanceOf[TextView]
+    val nonLinkContainer: LinearLayout = itemView.findViewById(R.id.nonLinkContainer).asInstanceOf[LinearLayout]
+    val amountAndMeta: RelativeLayout = itemView.findViewById(R.id.amountAndMeta).asInstanceOf[RelativeLayout]
+    val description: TextView = itemView.findViewById(R.id.description).asInstanceOf[TextView]
+    val statusIcon: ImageView = itemView.findViewById(R.id.statusIcon).asInstanceOf[ImageView]
+    val statusText: TextView = itemView.findViewById(R.id.statusText).asInstanceOf[TextView]
+    val amount: TextView = itemView.findViewById(R.id.amount).asInstanceOf[TextView]
+    val meta: TextView = itemView.findViewById(R.id.meta).asInstanceOf[TextView]
 
     spacer1.setZ(Float.MaxValue)
     itemView.setTag(this)
 
-    val paymentTypeIconViews: List[View] = paymentTypeIconIds.map(swipeWrap.findViewById)
+    val paymentTypeIconViews: List[View] = paymentTypeIconIds.map(itemView.findViewById)
     val iconMap: Map[Int, View] = paymentTypeIconIds.zip(paymentTypeIconViews).toMap
     var currentDetails: ItemDetails = _
     var lastVisibleIconId: Int = -1
 
-    paymentCardContainer setOnClickListener onButtonTap(ractOnTap)
-    setItemLabel setOnClickListener onButtonTap(doSetItemLabel)
-    shareItem setOnClickListener onButtonTap(doShareItem)
-
-    // MENU BUTTONS
-
-    def doSetItemLabel: Unit = {
-      val (container, extraInputLayout, extraInput, _, _) = singleInputPopup
-      mkCheckForm(alert => runAnd(alert.dismiss)(proceed), none, titleBodyAsViewBuilder(null, container), dialog_ok, dialog_cancel)
-      extraInputLayout.setHint(dialog_set_label)
-      showKeys(extraInput)
-
-      def proceed: Unit = Some(currentDetails).collectFirst { case info: TxInfo =>
-        val optionalInput = Option(extraInput.getText.toString).map(trimmed).filter(_.nonEmpty)
-        val description = info.description.withNewLabel(optionalInput)
-        WalletApp.txDataBag.updDescription(description, info.txid)
-      }
-    }
-
-    def doShareItem: Unit = Some(currentDetails).collectFirst {
-      case info: TxInfo => me share getString(share_chain_tx).format(info.txString)
-      case info: AddressInfo => me share info.identity
-    }
-
-    def ractOnTap: Unit = {
+    paymentCardContainer setOnClickListener onButtonTap {
       val isVisible = extraInfo.getVisibility == View.VISIBLE
       if (isVisible) collapse(currentDetails) else expand(currentDetails)
     }
@@ -507,11 +473,9 @@ class HubActivity extends BaseActivity with ExternalDataChecker { me =>
         // We are not sure if this one has been broadcasted yet
         val isEphemeral = WalletApp.pendingTxInfos.contains(info.txid)
         if (isEphemeral) itemView.setAlpha(0.6F)
-        swipeWrap.setLockDrag(isEphemeral)
 
         statusIcon setImageResource txStatusIcon(info)
-        setVisMany(info.description.label.isDefined -> labelIcon, true -> nonLinkContainer,
-          true -> amountAndMeta, true -> statusIcon, false -> statusText, true -> setItemLabel)
+        setVisMany(true -> nonLinkContainer, true -> amountAndMeta, true -> statusIcon, false -> statusText)
         amount.setText(WalletApp.denom.directedWithSign(info.receivedSat.toMilliSatoshi,
           info.sentSat.toMilliSatoshi, cardOut, cardIn, cardZero, info.isIncoming).html)
         description.setText(info.description.label getOrElse txDescription(info).html)
@@ -519,13 +483,12 @@ class HubActivity extends BaseActivity with ExternalDataChecker { me =>
         setTxMeta(info)
 
       case info: AddressInfo =>
-        swipeWrap.setLockDrag(false)
         setVisibleIcon(id = R.id.btcAddress)
         description.setText(info.identity.short.html)
         statusText.setText(info.description.label getOrElse "?")
         if (addressSpec.amounts contains info.pubKey) expand(info)
-        setVisMany(false -> labelIcon, true -> nonLinkContainer, false -> amountAndMeta,
-          false -> statusIcon, true -> statusText, false -> setItemLabel)
+        setVisMany(true -> nonLinkContainer, false -> amountAndMeta,
+          false -> statusIcon, true -> statusText)
     }
 
     def setVisibleIcon(id: Int): Unit = if (lastVisibleIconId != id) {
@@ -587,30 +550,6 @@ class HubActivity extends BaseActivity with ExternalDataChecker { me =>
 
       card.wrap setOnClickListener onButtonTap {
         goToWithValue(ClassNames.qrChainActivityClass, card.exPub)
-      }
-
-      card.setItemLabel setOnClickListener onButtonTap {
-        val (container, extraInputLayout, extraInput, _, _) = singleInputPopup
-        mkCheckForm(proceed, none, titleBodyAsViewBuilder(null, container), dialog_ok, dialog_cancel)
-        extraInputLayout.setHint(dialog_set_label)
-        showKeys(extraInput)
-
-        def proceed(alert: AlertDialog): Unit = runAnd(alert.dismiss) {
-          ElectrumWallet.setLabel(extraInput.getText.toString)(card.exPub)
-          card.update(R.color.cardBitcoinSigning)
-        }
-      }
-
-      card.removeItem setOnClickListener onButtonTap {
-        val builder = new AlertDialog.Builder(me).setMessage(confirm_remove_item)
-        mkCheckForm(proceed, none, builder, dialog_ok, dialog_cancel)
-
-        def proceed(alert: AlertDialog): Unit = {
-          ElectrumWallet.removeWallet(card.exPub)
-          cardsContainer.removeView(card.view)
-          chainCardsPresent -= card
-          alert.dismiss
-        }
       }
 
       cardsContainer.addView(card.view)

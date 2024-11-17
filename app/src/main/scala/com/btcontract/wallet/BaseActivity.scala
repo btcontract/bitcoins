@@ -21,7 +21,6 @@ import com.btcontract.wallet.BaseActivity.StringOps
 import com.btcontract.wallet.Colors._
 import com.btcontract.wallet.R.string._
 import com.btcontract.wallet.utils.{BitcoinUri, InputParser}
-import com.chauthai.swipereveallayout.SwipeRevealLayout
 import com.cottacush.android.currencyedittext.CurrencyEditText
 import com.google.android.material.slider.Slider
 import com.google.android.material.snackbar.{BaseTransientBottomBar, Snackbar}
@@ -655,18 +654,14 @@ trait WalletCard {
   def unPad: Unit = {
     val padding = paddingWrap.getPaddingTop
     paddingWrap.setPadding(padding, padding, padding, 0)
-    view.setLockDrag(true)
   }
 
-  val view: SwipeRevealLayout = host.getLayoutInflater.inflate(R.layout.frag_card, null).asInstanceOf[SwipeRevealLayout]
+  val view: LinearLayout = host.getLayoutInflater.inflate(R.layout.frag_card, null).asInstanceOf[LinearLayout]
   val paddingWrap: LinearLayout = view.findViewById(R.id.paddingWrap).asInstanceOf[LinearLayout]
   val doActionTip: ImageView = view.findViewById(R.id.doActionTip).asInstanceOf[ImageView]
   val wrap: CardView = view.findViewById(R.id.wrap).asInstanceOf[CardView]
 
   val cardContainer: View = view.findViewById(R.id.cardContainer).asInstanceOf[View]
-  val setItemLabel: NoboButton = view.findViewById(R.id.setItemLabel).asInstanceOf[NoboButton]
-  val removeItem: NoboButton = view.findViewById(R.id.removeItem).asInstanceOf[NoboButton]
-
   val cardTextLabel: TextView = view.findViewById(R.id.cardTextLabel).asInstanceOf[TextView]
   val cardTextNotice: TextView = view.findViewById(R.id.cardTextNotice).asInstanceOf[TextView]
   val cardImageLabel: ImageView = view.findViewById(R.id.cardImageLabel).asInstanceOf[ImageView]

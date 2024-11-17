@@ -1,184 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.chauthai.swipereveallayout.SwipeRevealLayout
+<LinearLayout
+    style="@style/FillingView"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:f="http://schemas.android.com/tools"
-    style="@style/FillingView"
-    app:dragEdge="left">
+    android:orientation="vertical"
+    android:paddingStart="15dp"
+    android:paddingEnd="15dp">
 
-    <LinearLayout
-        style="@style/BoundedView"
-        android:orientation="horizontal">
+    <View
+        android:id="@+id/spacer"
+        android:layout_height="10dp"
+        android:layout_width="match_parent"/>
 
-        <com.ornach.nobobutton.NoboButton
-            android:layout_marginStart="15dp"
-            app:nb_drawableResource="@drawable/baseline_label_20_24"
-            android:id="@+id/setItemLabel"
-            style="@style/GrayButton"/>
+    <View
+        android:id="@+id/spacer1"
+        android:layout_height="1dp"
+        android:background="@color/bg"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="-1dp"/>
 
-        <com.ornach.nobobutton.NoboButton
-            android:layout_marginStart="15dp"
-            app:nb_drawableResource="@drawable/outline_ios_share_20_24"
-            android:id="@+id/shareItem"
-            style="@style/GrayButton"/>
+    <androidx.cardview.widget.CardView
+        card_view:cardCornerRadius="@dimen/corner_radius"
+        android:id="@+id/paymentCardContainer"
+        style="@style/Card">
 
-    </LinearLayout>
+        <LinearLayout
+            android:visibility="gone"
+            style="@style/FillingView"
+            android:id="@+id/nonLinkContainer"
+            android:orientation="horizontal"
+            android:gravity="center">
 
-    <LinearLayout
-        android:paddingEnd="15dp"
-        android:paddingStart="15dp"
-        android:orientation="vertical"
-        style="@style/FillingView">
+            <!-- BTC address -->
 
-        <View
-            android:id="@+id/spacer"
-            android:layout_height="10dp"
-            android:layout_width="match_parent"/>
+            <LinearLayout style="@style/Tag" android:gravity="center" android:orientation="horizontal" android:id="@+id/btcAddress">
+                <ImageView android:layout_width="20dp" android:layout_height="20dp" android:background="@drawable/ic_logo_bitcoin_24dp"/>
+            </LinearLayout>
 
-        <View
-            android:id="@+id/spacer1"
-            android:layout_height="1dp"
-            android:background="@color/bg"
-            android:layout_width="match_parent"
-            android:layout_marginBottom="-1dp"/>
+            <!-- BTC incoming -->
 
-        <androidx.cardview.widget.CardView
-            card_view:cardCornerRadius="@dimen/corner_radius"
-            android:id="@+id/paymentCardContainer"
-            style="@style/Card">
+            <LinearLayout style="@style/Tag" android:gravity="center" android:orientation="horizontal" android:id="@+id/btcIncoming">
+                <ImageView style="@style/BoundedView" android:background="@drawable/baseline_arrow_downward_18"/>
+                <ImageView style="@style/BoundedView" android:background="@drawable/ic_logo_bitcoin_24dp"/>
+            </LinearLayout>
+
+            <!-- BTC incoming boosted -->
+
+            <LinearLayout style="@style/Tag" android:gravity="center" android:orientation="horizontal" android:id="@+id/btcInBoosted">
+                <ImageView style="@style/BoundedView" android:background="@drawable/baseline_arrow_downward_18"/>
+                <ImageView style="@style/BoundedView" android:background="@drawable/baseline_arrow_downward_18"/>
+            </LinearLayout>
+
+            <!-- BTC outgoing boosted -->
+
+            <LinearLayout style="@style/Tag" android:gravity="center" android:orientation="horizontal" android:id="@+id/btcOutBoosted">
+                <ImageView style="@style/BoundedView" android:background="@drawable/baseline_arrow_upward_18"/>
+                <ImageView style="@style/BoundedView" android:background="@drawable/baseline_arrow_upward_18"/>
+            </LinearLayout>
+
+            <!-- BTC outgoing cancelled -->
+
+            <LinearLayout style="@style/Tag" android:gravity="center" android:orientation="horizontal" android:id="@+id/btcOutCancelled">
+                <ImageView style="@style/BoundedView" android:background="@drawable/outline_shortcut_20" android:rotation="90"/>
+            </LinearLayout>
+
+            <!-- BTC outgoing -->
+
+            <LinearLayout style="@style/Tag" android:gravity="center" android:orientation="horizontal" android:id="@+id/btcOutgoing">
+                <ImageView style="@style/BoundedView" android:background="@drawable/baseline_arrow_upward_18"/>
+                <ImageView style="@style/BoundedView" android:background="@drawable/ic_logo_bitcoin_24dp"/>
+            </LinearLayout>
+
+            <!-- Content -->
 
             <LinearLayout
-                android:visibility="gone"
                 style="@style/FillingView"
-                android:id="@+id/nonLinkContainer"
-                android:orientation="horizontal"
-                android:gravity="center">
+                android:orientation="vertical"
+                android:paddingBottom="11dp"
+                android:paddingStart="0dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="15dp">
 
-                <!-- BTC address -->
+                <!-- Top line -->
 
-                <LinearLayout style="@style/Tag" android:gravity="center" android:orientation="horizontal" android:id="@+id/btcAddress">
-                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:background="@drawable/ic_logo_bitcoin_24dp"/>
-                </LinearLayout>
+                <RelativeLayout style="@style/FillingView">
 
-                <!-- BTC incoming -->
-
-                <LinearLayout style="@style/Tag" android:gravity="center" android:orientation="horizontal" android:id="@+id/btcIncoming">
-                    <ImageView style="@style/BoundedView" android:background="@drawable/baseline_arrow_downward_18"/>
-                    <ImageView style="@style/BoundedView" android:background="@drawable/ic_logo_bitcoin_24dp"/>
-                </LinearLayout>
-
-                <!-- BTC incoming boosted -->
-
-                <LinearLayout style="@style/Tag" android:gravity="center" android:orientation="horizontal" android:id="@+id/btcInBoosted">
-                    <ImageView style="@style/BoundedView" android:background="@drawable/baseline_arrow_downward_18"/>
-                    <ImageView style="@style/BoundedView" android:background="@drawable/baseline_arrow_downward_18"/>
-                </LinearLayout>
-
-                <!-- BTC outgoing boosted -->
-
-                <LinearLayout style="@style/Tag" android:gravity="center" android:orientation="horizontal" android:id="@+id/btcOutBoosted">
-                    <ImageView style="@style/BoundedView" android:background="@drawable/baseline_arrow_upward_18"/>
-                    <ImageView style="@style/BoundedView" android:background="@drawable/baseline_arrow_upward_18"/>
-                </LinearLayout>
-
-                <!-- BTC outgoing cancelled -->
-
-                <LinearLayout style="@style/Tag" android:gravity="center" android:orientation="horizontal" android:id="@+id/btcOutCancelled">
-                    <ImageView style="@style/BoundedView" android:background="@drawable/outline_shortcut_20" android:rotation="90"/>
-                </LinearLayout>
-
-                <!-- BTC outgoing -->
-
-                <LinearLayout style="@style/Tag" android:gravity="center" android:orientation="horizontal" android:id="@+id/btcOutgoing">
-                    <ImageView style="@style/BoundedView" android:background="@drawable/baseline_arrow_upward_18"/>
-                    <ImageView style="@style/BoundedView" android:background="@drawable/ic_logo_bitcoin_24dp"/>
-                </LinearLayout>
-
-                <!-- Content -->
-
-                <LinearLayout
-                    style="@style/FillingView"
-                    android:orientation="vertical"
-                    android:paddingBottom="11dp"
-                    android:paddingStart="0dp"
-                    android:paddingTop="10dp"
-                    android:paddingEnd="15dp">
-
-                    <!-- Top line -->
-
-                    <RelativeLayout style="@style/FillingView">
-
-                        <ImageView
-                            style="@style/BoundedView"
-                            android:id="@+id/labelIcon"
-                            android:layout_marginEnd="3dp"
-                            android:layout_centerVertical="true"
-                            android:src="@drawable/baseline_label_20_24"/>
-
-                        <TextView
-                            style="@style/FillingView"
-                            android:id="@+id/description"
-                            android:layout_centerVertical="true"
-                            android:layout_toEndOf="@+id/labelIcon"
-                            android:layout_toStartOf="@id/statusText"
-                            android:layout_marginEnd="3dp"
-                            android:textStyle="bold"
-                            android:ellipsize="end"
-                            android:maxLines="1"/>
-
-                        <TextView
-                            style="@style/ChipTextGray"
-                            android:id="@+id/statusText"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentEnd="true"
-                            android:layout_toStartOf="@id/statusIcon"/>
-
-                        <ImageView
-                            style="@style/BoundedView"
-                            android:id="@+id/statusIcon"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentEnd="true"/>
-
-                    </RelativeLayout>
-
-                    <!-- Bottom line -->
-
-                    <RelativeLayout
-                        android:layout_marginTop="11dp"
-                        android:id="@+id/amountAndMeta"
-                        style="@style/FillingView">
-
-                        <TextView
-                            android:maxLines="1"
-                            android:ellipsize="end"
-                            android:id="@+id/amount"
-                            android:textStyle="bold"
-                            android:layout_toStartOf="@+id/meta"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentStart="true"
-                            style="@style/BoundedView"/>
-
-                        <TextView
-                            android:maxLines="1"
-                            android:id="@+id/meta"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentEnd="true"
-                            style="@style/BoundedView"/>
-
-                    </RelativeLayout>
-
-                    <!-- Extra details -->
-
-                    <org.apmem.tools.layouts.FlowLayout
-                        android:layout_marginTop="15dp"
-                        android:id="@+id/extraInfo"
+                    <TextView
                         style="@style/FillingView"
-                        android:visibility="gone"
-                        f:layout_newLine="true"/>
+                        android:id="@+id/description"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@id/statusText"
+                        android:layout_marginEnd="3dp"
+                        android:textStyle="bold"
+                        android:ellipsize="end"
+                        android:maxLines="1"/>
 
-                </LinearLayout>
+                    <TextView
+                        style="@style/ChipTextGray"
+                        android:id="@+id/statusText"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_toStartOf="@id/statusIcon"/>
+
+                    <ImageView
+                        style="@style/BoundedView"
+                        android:id="@+id/statusIcon"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"/>
+
+                </RelativeLayout>
+
+                <!-- Bottom line -->
+
+                <RelativeLayout
+                    android:layout_marginTop="11dp"
+                    android:id="@+id/amountAndMeta"
+                    style="@style/FillingView">
+
+                    <TextView
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:id="@+id/amount"
+                        android:textStyle="bold"
+                        android:layout_toStartOf="@+id/meta"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentStart="true"
+                        style="@style/BoundedView"/>
+
+                    <TextView
+                        android:maxLines="1"
+                        android:id="@+id/meta"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"
+                        style="@style/BoundedView"/>
+
+                </RelativeLayout>
+
+                <!-- Extra details -->
+
+                <org.apmem.tools.layouts.FlowLayout
+                    android:layout_marginTop="15dp"
+                    android:id="@+id/extraInfo"
+                    style="@style/FillingView"
+                    android:visibility="gone"
+                    f:layout_newLine="true"/>
+
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>
-</com.chauthai.swipereveallayout.SwipeRevealLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

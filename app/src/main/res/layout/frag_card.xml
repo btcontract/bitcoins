@@ -1,106 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.chauthai.swipereveallayout.SwipeRevealLayout
+<LinearLayout
+    style="@style/FillingView"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/FillingView"
-    app:dragEdge="left">
+    android:orientation="vertical"
+    android:id="@+id/paddingWrap"
+    android:paddingStart="15dp"
+    android:paddingEnd="15dp"
+    android:paddingTop="5dp">
 
-    <LinearLayout
-        style="@style/BoundedView"
-        android:orientation="horizontal">
+    <androidx.cardview.widget.CardView
+        card_view:cardCornerRadius="@dimen/corner_radius"
+        android:id="@+id/wrap"
+        style="@style/Card">
 
-        <com.ornach.nobobutton.NoboButton
-            android:layout_marginStart="15dp"
-            app:nb_drawableResource="@drawable/baseline_label_20_24"
-            android:id="@+id/setItemLabel"
-            style="@style/GrayButton"/>
+        <RelativeLayout
+            style="@style/FillingView"
+            android:id="@+id/cardContainer"
+            android:padding="15dp">
 
-        <com.ornach.nobobutton.NoboButton
-            android:layout_marginStart="15dp"
-            app:nb_drawableResource="@drawable/baseline_close_20_24"
-            android:id="@+id/removeItem"
-            style="@style/RedButton"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:paddingTop="5dp"
-        android:paddingEnd="15dp"
-        android:paddingStart="15dp"
-        android:orientation="vertical"
-        android:id="@+id/paddingWrap"
-        style="@style/FillingView">
-
-        <androidx.cardview.widget.CardView
-            card_view:cardCornerRadius="@dimen/corner_radius"
-            android:id="@+id/wrap"
-            style="@style/Card">
-
-            <RelativeLayout
-                style="@style/FillingView"
-                android:id="@+id/cardContainer"
-                android:padding="15dp">
-
-                <LinearLayout
-                    style="@style/BoundedView"
-                    android:orientation="vertical"
-                    android:layout_centerVertical="true">
-
-                    <ImageView
-                        style="@style/BoundedView"
-                        android:id="@+id/cardImageLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:scaleType="fitStart"
-                        android:visibility="gone"/>
-
-                    <TextView
-                        android:textColor="@android:color/white"
-                        android:id="@+id/cardTextLabel"
-                        style="@style/Emphasized"/>
-
-                    <TextView
-                        android:layout_marginTop="6dp"
-                        android:textColor="@android:color/white"
-                        android:id="@+id/cardTextNotice"
-                        style="@style/BoundedView"/>
-
-                </LinearLayout>
-
-                <!-- Some coins present -->
-
-                <LinearLayout
-                    style="@style/BoundedView"
-                    android:id="@+id/balanceWrap"
-                    android:orientation="vertical"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:gravity="end">
-
-                    <TextView
-                        android:id="@+id/balance"
-                        style="@style/Emphasized"/>
-
-                    <TextView
-                        android:layout_marginTop="6dp"
-                        android:textColor="@android:color/white"
-                        android:id="@+id/balanceFiat"
-                        style="@style/BoundedView"/>
-
-                </LinearLayout>
-
-                <!-- No coins present -->
+            <LinearLayout
+                style="@style/BoundedView"
+                android:orientation="vertical"
+                android:layout_centerVertical="true">
 
                 <ImageView
                     style="@style/BoundedView"
-                    android:id="@+id/doActionTip"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/baseline_add_24"
+                    android:id="@+id/cardImageLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:scaleType="fitStart"
                     android:visibility="gone"/>
 
-            </RelativeLayout>
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>
-</com.chauthai.swipereveallayout.SwipeRevealLayout>
+                <TextView
+                    android:textColor="@android:color/white"
+                    android:id="@+id/cardTextLabel"
+                    style="@style/Emphasized"/>
+
+                <TextView
+                    android:layout_marginTop="6dp"
+                    android:textColor="@android:color/white"
+                    android:id="@+id/cardTextNotice"
+                    style="@style/BoundedView"/>
+
+            </LinearLayout>
+
+            <!-- Some coins present -->
+
+            <LinearLayout
+                style="@style/BoundedView"
+                android:id="@+id/balanceWrap"
+                android:orientation="vertical"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:gravity="end">
+
+                <TextView
+                    android:id="@+id/balance"
+                    style="@style/Emphasized"/>
+
+                <TextView
+                    android:layout_marginTop="6dp"
+                    android:textColor="@android:color/white"
+                    android:id="@+id/balanceFiat"
+                    style="@style/BoundedView"/>
+
+            </LinearLayout>
+
+            <!-- No coins present -->
+
+            <ImageView
+                style="@style/BoundedView"
+                android:id="@+id/doActionTip"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/baseline_add_24"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

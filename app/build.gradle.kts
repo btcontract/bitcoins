@@ -6,7 +6,7 @@ apply(plugin = "com.soundcorset.scala-android")
 
 android {
     namespace = "com.btcontract.wallet"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.btcontract.wallet"
